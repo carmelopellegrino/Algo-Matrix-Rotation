@@ -91,7 +91,7 @@ void rotate(std::vector< std::vector<int> > const& a, std::vector< std::vector<i
 
 std::vector< std::vector<int> > rotate(std::vector< std::vector<int> > const& a, int r)
 {
-    std::vector< std::vector<int> > b(a.size(), std::vector<int>(a[0].size()));
+    std::vector< std::vector<int> > b(a);
 
     rotate(a, b, r);
     return b;
