@@ -132,22 +132,6 @@ void rotate(std::vector< std::vector<int> > const& a, std::vector< std::vector<i
     }
 }
 
-std::vector< std::vector<int> > rotate(std::vector< std::vector<int> > const& a, int r)
-{
-    std::vector< std::vector<int> > b(a);
-
-    rotate(a, b, r);
-    return b;
-    //std::vector< std::vector<int> > b1(a);
-    //std::vector< std::vector<int> > b2(a);
-
-    //for (int i = 0; i < r; ++i) {
-    //    rotate(b1, b2);
-    //    b1.swap(b2);
-    //}
-    //return b1;
-}
-
 int main() {
     int m, n, r;
     std::cin >> m >> n >> r;
@@ -158,15 +142,14 @@ int main() {
         }
     }
 
-    std::vector< std::vector<int> > const b = rotate(a, r);
+    std::vector< std::vector<int> > b(a.size(), std::vector<int>(a[0].size()));
+
+    rotate(a, b, r);
 
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
             std::cout << b[i][j];
-            if (j != n -1) std::cout << ' ';
+            std::cout << (j != n - 1 ? ' ' : '\n');
         }
-        std::cout << '\n';
     }
-
-    return 0;
 }
