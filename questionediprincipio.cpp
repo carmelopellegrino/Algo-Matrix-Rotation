@@ -31,6 +31,11 @@ int layer(int i, int j, int m, int n)
 
 std::pair<int, int> destination(int i, int j, int i_max, int i_min, int j_max, int j_min, int r)
 {
+  r = r % (2 * (i_max - i_min + j_max - j_min));
+  if (r == 0) {
+    return std::make_pair(i, j);
+  }
+
   int i_dest = i;
   int j_dest = j;
 
