@@ -29,34 +29,82 @@ int layer(int i, int j, int m, int n)
     return min(j, i);
 }
 
-std::pair<int, int> destination(int i, int j, int i_max, int i_min, int j_max, int j_min)
+std::pair<int, int> destination(int i, int j, int i_max, int i_min, int j_max, int j_min, int r)
 {
   int i_dest = i;
   int j_dest = j;
 
   if (i == i_min) {
      if (j == j_min) {
-         i_dest = i + 1;
+       if (i + r <= i_max) {
+         i_dest = i + r;
          // j_dest = j;
+       } else {
+         int const step = r - (i_max - i_dest);
+         i_dest = i_max;
+         std::pair<int, int> const d = destination(i_dest, j_dest, i_max, i_min, j_max, j_min, step);
+         i_dest = d.first;
+         j_dest = d.second;
+       }
      } else {
+       if (j - r >= j_min) {
          // i_dest = i;
-         j_dest = j - 1;
+         j_dest = j - r;
+       } else {
+         int const step = r - (j_dest - j_min);
+         j_dest = j_min;
+         std::pair<int, int> const d = destination(i_dest, j_dest, i_max, i_min, j_max, j_min, step);
+         i_dest = d.first;
+         j_dest = d.second;
+       }
      }
   } else if (i == i_max) {
      if (j == j_max) {
-         i_dest = i - 1;
+       if (i - r >= i_min) {
+         i_dest = i - r;
          // j_dest = j;
+       } else {
+         int const step = r - (i_dest - i_min);
+         i_dest = i_min;
+         std::pair<int, int> const d = destination(i_dest, j_dest, i_max, i_min, j_max, j_min, step);
+         i_dest = d.first;
+         j_dest = d.second;
+       }
      } else {
+       if (j + r <= j_max) {
          // i_dest = i;
-         j_dest = j + 1;
+         j_dest = j + r;
+       } else {
+         int const step = r - (j_max - j_dest);
+         j_dest = j_max;
+         std::pair<int, int> const d = destination(i_dest, j_dest, i_max, i_min, j_max, j_min, step);
+         i_dest = d.first;
+         j_dest = d.second;
+       }
      }
   } else {
      if (j == j_min) {
-         i_dest = i + 1;
+       if (i + r <= i_max) {
+         i_dest = i + r;
          // j_dest = j;
+       } else {
+         int const step = r - (i_max - i_dest);
+         i_dest = i_max;
+         std::pair<int, int> const d = destination(i_dest, j_dest, i_max, i_min, j_max, j_min, step);
+         i_dest = d.first;
+         j_dest = d.second;
+       }
      } else {
-         i_dest = i - 1;
+       if (i - r >= i_min) {
+         i_dest = i - r;
          // j_dest = j;
+       } else {
+         int const step = r - (i_dest - i_min);
+         i_dest = i_min;
+         std::pair<int, int> const d = destination(i_dest, j_dest, i_max, i_min, j_max, j_min, step);
+         i_dest = d.first;
+         j_dest = d.second;
+       }
      }
   }
 
@@ -77,12 +125,7 @@ void rotate(std::vector< std::vector<int> > const& a, std::vector< std::vector<i
           int const j_min = l;
           int const j_max = n - l - 1;
 
-          std::pair<int, int> d = std::make_pair(i, j);
-
-          for (int k = 0; k < r; ++k) {
-            std::pair<int, int> const d1 = destination(d.first, d.second, i_max, i_min, j_max, j_min);
-            d = d1;
-          }
+          std::pair<int, int> const d = destination(i, j, i_max, i_min, j_max, j_min, r);
 
           b[d.first][d.second] = a[i][j];
         }
